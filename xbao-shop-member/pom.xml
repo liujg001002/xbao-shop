@@ -12,5 +12,18 @@
     <artifactId>xbao-shop-member</artifactId>
     <packaging>jar</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>${parent.groupId}</groupId>
+            <artifactId>xbao-shop-member-api</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${parent.groupId}</groupId>
+            <artifactId>xbao-shop-common</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+    </dependencies>
+
 
 </project>
