@@ -12,6 +12,7 @@
         <module>xbao-shop-api</module>
         <module>xbao-shop-eurekaserver</module>
         <module>xbao-shop-member</module>
+        <module>xbao-shopp-message</module>
     </modules>
     <packaging>pom</packaging>
     <parent>

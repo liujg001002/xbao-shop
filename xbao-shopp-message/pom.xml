@@ -9,28 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>xbao-shop-member</artifactId>
+    <artifactId>xbao-shopp-message</artifactId>
     <packaging>jar</packaging>
-
     <dependencies>
         <dependency>
-            <groupId>${parent.groupId}</groupId>
-            <artifactId>xbao-shop-member-api</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${parent.groupId}</groupId>
+            <groupId>com.xbao</groupId>
             <artifactId>xbao-shop-common</artifactId>
             <version>${parent.version}</version>
         </dependency>
-        <!-- springboot整合mybatis -->
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>1.3.0</version>
-        </dependency>
-
     </dependencies>
-
 
 </project>
