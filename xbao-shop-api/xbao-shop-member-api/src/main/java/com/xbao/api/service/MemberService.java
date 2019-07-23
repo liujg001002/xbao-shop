@@ -13,4 +13,10 @@ public interface MemberService {
 	ResponseBase findUserById(Long userId);
 	@RequestMapping("/regUser")
 	ResponseBase regUser( UserEntity user);
+	// 用户登录
+	@RequestMapping("/login")
+	ResponseBase login(@RequestBody UserEntity user);
+	// 使用token进行登录
+	@RequestMapping("/findByTokenUser")
+	ResponseBase findByTokenUser(String token);
 }
