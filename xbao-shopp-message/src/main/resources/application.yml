@@ -15,8 +15,8 @@ spring:
       enabled: false
   mail:
     host: smtp.163.com
-    username: yushengjun2018@163.com
-    password: itmayiedu644
+    username: liujianguo66778899@163.com
+    password: liujg001002
     enable:  true
     smtp:
       auth: true
