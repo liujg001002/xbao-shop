@@ -23,6 +23,7 @@ public class UserEntity {
     private Date created;
     //更新日期
     private Date updated;
+    private String openid;
 
 
 }

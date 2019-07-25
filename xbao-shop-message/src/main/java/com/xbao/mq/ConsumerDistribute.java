@@ -42,6 +42,7 @@ public class ConsumerDistribute {
 			return;
 		}
 		JSONObject contentJson = rootJSON.getJSONObject("content");
+		//发送消息（邮件/短信）
 		messageAdapter.sendMsg(contentJson);
 
 	}

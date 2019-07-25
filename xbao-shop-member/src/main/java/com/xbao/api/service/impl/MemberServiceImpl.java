@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
@@ -42,17 +43,16 @@ public class MemberServiceImpl extends BaseApiService implements MemberService {
 	}
 
 	@Override
-	public ResponseBase regUser( UserEntity user) {
+	public ResponseBase regUser(@RequestBody UserEntity user) {
 		// 参数验证
 		String password = user.getPassword();
 		if (StringUtils.isEmpty(password)) {
 			return setResultError("密码不能为空.");
 		}
-		user.setCreated(new Date());
-		user.setUpdated(new Date());
-
 		String newPassword = MD5Util.MD5(password);
 		user.setPassword(newPassword);
+		user.setCreated(new Date());
+		user.setUpdated(new Date());
 		Integer result = memberDao.insertUser(user);
 		if (result <= 0) {
 			return setResultError("注册用户信息失败.");
@@ -81,6 +81,7 @@ public class MemberServiceImpl extends BaseApiService implements MemberService {
 		registerMailboxProducer.sendMsg(activeMQQueue, json);
 
 	}
+
 	@Override
 	public ResponseBase login(@RequestBody UserEntity user) {
 		// 1.验证参数
@@ -95,6 +96,11 @@ public class MemberServiceImpl extends BaseApiService implements MemberService {
 		// 2.数据库查找账号密码是否正确
 		String newPassWrod = MD5Util.MD5(password);
 		UserEntity userEntity = memberDao.login(username, newPassWrod);
+		return setLogin(userEntity);
+
+	}
+
+	private ResponseBase setLogin(UserEntity userEntity) {
 		if (userEntity == null) {
 			return setResultError("账号或者密码不能正确");
 		}
@@ -111,7 +117,7 @@ public class MemberServiceImpl extends BaseApiService implements MemberService {
 	}
 
 	@Override
-	public ResponseBase findByTokenUser(String token) {
+	public ResponseBase findByTokenUser(@RequestParam("token") String token) {
 		// 1.验证参数
 		if (StringUtils.isEmpty(token)) {
 			return setResultError("token不能为空!");
@@ -129,5 +135,50 @@ public class MemberServiceImpl extends BaseApiService implements MemberService {
 		}
 		userEntity.setPassword(null);
 		return setResultSuccess(userEntity);
+	}
+
+	@Override
+	public ResponseBase findByOpenIdUser(@RequestParam("openid") String openid) {
+		// 1.验证参数
+		if (StringUtils.isEmpty(openid)) {
+			return setResultError("openid不能为空1");
+		}
+		// 2.使用openid 查询数据库 user表对应数据信息
+		UserEntity userEntity = memberDao.findByOpenIdUser(openid);
+		if (userEntity == null) {
+			return setResultError(Constants.HTTP_RES_CODE_201, "该openid没有关联");
+		}
+		// 3.自动登录
+		return setLogin(userEntity);
+	}
+
+	@Override
+	public ResponseBase qqLogin(@RequestBody UserEntity user) {
+		// 1.验证参数
+		String openid = user.getOpenid();
+		if (StringUtils.isEmpty(openid)) {
+			return setResultError("openid不能为空!");
+		}
+		// 2.先进行账号登录
+		ResponseBase setLogin = login(user);
+		if (!setLogin.getRtnCode().equals(Constants.HTTP_RES_CODE_200)) {
+			return setLogin;
+		}
+		// 3.自动登录
+		JSONObject jsonObjcet = (JSONObject) setLogin.getData();
+		// 4. 获取token信息
+		String memberToken = jsonObjcet.getString("memberToken");
+		ResponseBase userToken = findByTokenUser(memberToken);
+		if (!userToken.getRtnCode().equals(Constants.HTTP_RES_CODE_200)) {
+			return userToken;
+		}
+		UserEntity userEntity = (UserEntity) userToken.getData();
+		// 5.修改用户openid
+		Integer userId = userEntity.getId();
+		Integer updateByOpenIdUser = memberDao.updateByOpenIdUser(openid, userId);
+		if (updateByOpenIdUser <= 0) {
+			return setResultError("QQ账号管理失败!");
+		}
+		return setLogin;
 	}
 }
