@@ -13,6 +13,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>xbao-shop-member-api</module>
+        <module>xbao-shop-pay-api</module>
+        <module>xbao-shop-order-api</module>
     </modules>
 
     <dependencies>

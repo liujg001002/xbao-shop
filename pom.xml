@@ -14,6 +14,8 @@
         <module>xbao-shop-member</module>
         <module>xbao-shop-message</module>
         <module>xbao-shop-pc-web</module>
+        <module>xbao-shop-pay</module>
+        <module>xbao-shop-order</module>
     </modules>
     <packaging>pom</packaging>
     <parent>
