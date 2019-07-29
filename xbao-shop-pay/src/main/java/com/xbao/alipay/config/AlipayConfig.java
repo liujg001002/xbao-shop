@@ -1,8 +1,9 @@
-package com.alipay.config;
+package com.xbao.alipay.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,46 +18,46 @@ import java.io.IOException;
  *该代码仅供学习和研究支付宝接口使用，只是提供一个参考。
  */
 
-@Configuration
+@Component
 public class AlipayConfig {
 
     // ↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
     // 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号
-    @Value("alipay.appId")
-    public static String app_id ;
+    @Value("${alipay.appId}")
+    public String app_id ;
 
     // 商户私钥，您的PKCS8格式RSA2私钥
-    @Value("alipay.merchantPrivateKey")
-    public static String merchant_private_key ;
+    @Value("${alipay.merchantPrivateKey}")
+    public String merchant_private_key ;
     // 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm
     // 对应APPID下的支付宝公钥。
-    @Value("alipay.alipayPublicKey")
-    public static String alipay_public_key ;
+    @Value("${alipay.alipayPublicKey}")
+    public String alipay_public_key ;
 
     // 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-    @Value("alipay.returnUrl")
-    public static String return_url ;
+    @Value("${alipay.returnUrl}")
+    public String return_url ;
 
     // 服务器异步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-    @Value("alipay.notifyUrl")
-    public static String notify_url ;
+    @Value("${alipay.notifyUrl}")
+    public String notify_url ;
 
     // 签名方式
-    @Value("alipay.signType")
-    public static String sign_type ;
+    @Value("${alipay.signType}")
+    public String sign_type ;
 
     // 字符编码格式
-    @Value("alipay.charset")
-    public static String charset ;
+    @Value("${alipay.charset}")
+    public String charset ;
 
     // 支付宝网关
-    @Value("alipay.gatewayUrl")
-    public static String gatewayUrl;
+    @Value("${alipay.gatewayUrl}")
+    public String gatewayUrl;
 
     // 支付宝网关
-    @Value("alipay.logPath")
-    public static String log_path ;
+    @Value("${alipay.logPath}")
+    public String log_path ;
 
     // ↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
@@ -66,7 +67,7 @@ public class AlipayConfig {
      * @param sWord
      *            要写入日志里的文本内容
      */
-    public static void logResult(String sWord) {
+    /*public static void logResult(String sWord) {
         FileWriter writer = null;
         try {
             writer = new FileWriter(log_path + "alipay_log_" + System.currentTimeMillis() + ".txt");
@@ -82,5 +83,5 @@ public class AlipayConfig {
                 }
             }
         }
-    }
+    }*/
 }

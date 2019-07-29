@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
-import com.alipay.config.AlipayConfig;
+import com.xbao.alipay.config.AlipayConfig;
 import com.xbao.base.BaseApiService;
 import com.xbao.base.ResponseBase;
 import com.xbao.constants.Constants;
@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 @RestController
 public class PayServiceImpl extends BaseApiService implements PayService {
 	@Autowired
@@ -27,8 +29,35 @@ public class PayServiceImpl extends BaseApiService implements PayService {
 	private AlipayConfig alipayConfig;
 
 	// 创建支付令牌
-	@RequestMapping("/createPayToken")
 	public ResponseBase createToken(@RequestBody PaymentInfo paymentInfo) {
+		if(paymentInfo!=null){
+			paymentInfo.setCreated(new Date());
+			paymentInfo.setUpdated(new Date());
+		}
+		if(paymentInfo==null){
+			/*{
+				"typeId":1,
+					"orderId":"15",
+					"platformorderId":"123456789",
+					"price":1,
+					"source":"pc",
+					"state":0,
+					"payMessage":"message",
+					"userId":123
+
+			}*/
+			paymentInfo = new PaymentInfo();
+			paymentInfo.setOrderId(15+"");
+			paymentInfo.setPlatformorderId("123456789");
+			paymentInfo.setPrice(1l);
+			paymentInfo.setSource("pc");
+			paymentInfo.setState(0);
+			paymentInfo.setPayMessage("message");
+			paymentInfo.setUserId("123");
+			paymentInfo.setTypeId(1l);
+			paymentInfo.setCreated(new Date());
+			paymentInfo.setUpdated(new Date());
+		}
 		// 1.创建支付请求信息
 		Integer savePaymentType = paymentInfoDao.savePaymentType(paymentInfo);
 		if (savePaymentType <= 0) {
@@ -45,7 +74,6 @@ public class PayServiceImpl extends BaseApiService implements PayService {
 	}
 
 	// 使用支付令牌查找支付信息
-	@RequestMapping("/findPayToken")
 	public ResponseBase findPayToken(@RequestParam("payToken")  String payToken) {
 		// 1.参数验证
 		if (StringUtils.isEmpty(payToken)) {

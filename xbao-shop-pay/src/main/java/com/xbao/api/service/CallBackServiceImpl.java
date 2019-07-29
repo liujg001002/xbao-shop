@@ -2,7 +2,7 @@ package com.xbao.api.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.internal.util.AlipaySignature;
-import com.alipay.config.AlipayConfig;
+import com.xbao.alipay.config.AlipayConfig;
 import com.xbao.base.BaseApiService;
 import com.xbao.base.ResponseBase;
 import com.xbao.constants.Constants;
