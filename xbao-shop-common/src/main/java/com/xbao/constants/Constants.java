@@ -1,6 +1,8 @@
 package com.xbao.constants;
 
 public interface Constants {
+
+	String BASE_PACKAGE = "com.xbao";
 	/// 响应请求成功
 	String HTTP_RES_CODE_200_VALUE = "success";
 	// 系统错误
